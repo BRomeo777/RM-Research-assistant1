@@ -13,8 +13,9 @@ from api.middleware.rate_limit import limiter
 from api.routes import health
 from api.routes import search
 from api.routes import extractions
-from api.routes import maps  # <-- NEW: Imported the maps route
-# from api.routes import manuscripts, integrity (Placeholder for future phases)
+from api.routes import maps
+from api.routes import integrity  # <-- NEW: Imported the Veritas integrity route
+# from api.routes import manuscripts (Placeholder for future phases)
 
 def create_app() -> FastAPI:
     """
@@ -47,8 +48,11 @@ def create_app() -> FastAPI:
     # The TrialSieve Extraction Route
     app.include_router(extractions.router, prefix="/api/v1/extract")
     
-    # NEW: Activating the Citation Map Route (Phase 4)
+    # The Citation Map Route (Phase 4)
     app.include_router(maps.router, prefix="/api/v1/maps")
+
+    # NEW: Activating the Veritas Integrity Route (Phase 5)
+    app.include_router(integrity.router, prefix="/api/v1/veritas")
 
     return app
 
