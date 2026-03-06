@@ -12,8 +12,9 @@ from api.middleware.rate_limit import limiter
 # Import routes
 from api.routes import health
 from api.routes import search
-from api.routes import extractions  # <-- NEW: Imported the extractions route
-# from api.routes import maps, manuscripts, integrity (Placeholder for future phases)
+from api.routes import extractions
+from api.routes import maps  # <-- NEW: Imported the maps route
+# from api.routes import manuscripts, integrity (Placeholder for future phases)
 
 def create_app() -> FastAPI:
     """
@@ -37,14 +38,17 @@ def create_app() -> FastAPI:
     app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
     # 3. Register API Routes
-    # The health check route (for Render deployments and system diagnostics)
+    # The health check route (for diagnostics)
     app.include_router(health.router, prefix="/api/v1")
     
     # The Phase 2 Seed Intelligence search route
     app.include_router(search.router, prefix="/api/v1/search")
     
-    # NEW: Activating the TrialSieve Extraction Route
+    # The TrialSieve Extraction Route
     app.include_router(extractions.router, prefix="/api/v1/extract")
+    
+    # NEW: Activating the Citation Map Route (Phase 4)
+    app.include_router(maps.router, prefix="/api/v1/maps")
 
     return app
 
