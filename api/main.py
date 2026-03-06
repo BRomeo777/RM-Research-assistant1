@@ -12,7 +12,8 @@ from api.middleware.rate_limit import limiter
 # Import routes
 from api.routes import health
 from api.routes import search
-# from api.routes import extractions, maps, manuscripts (Placeholder for future phases)
+from api.routes import extractions  # <-- NEW: Imported the extractions route
+# from api.routes import maps, manuscripts, integrity (Placeholder for future phases)
 
 def create_app() -> FastAPI:
     """
@@ -41,6 +42,9 @@ def create_app() -> FastAPI:
     
     # The Phase 2 Seed Intelligence search route
     app.include_router(search.router, prefix="/api/v1/search")
+    
+    # NEW: Activating the TrialSieve Extraction Route
+    app.include_router(extractions.router, prefix="/api/v1/extract")
 
     return app
 
